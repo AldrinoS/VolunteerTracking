@@ -82,7 +82,7 @@
 </head>
 <body>
 <h1>Registration Form</h1>
-<form>
+<form id="myForm" action="/registerUser" method="GET">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" placeholder="Enter your name"><br>
 
@@ -98,7 +98,7 @@
 
     <button id="registerBtn" type="submit" value="Register">Register</button>
     <button id="loginBtn">Login</button>
-    <p id="contact-error" style="color: red;"></p>
+    <p id="contact-error" style="color: red;">${registerFailed}</p>
 </form>
 
 
@@ -111,6 +111,11 @@
     })
 
     window.onload = function() {
+        let failMsg = document.getElementById("contact-error").innerText;
+        if(failMsg) {
+            alert(failMsg)
+        }
+
         var dobInput = document.getElementById('DOB');
         // var ageError = document.getElementById('age-error');
 
@@ -147,105 +152,106 @@
 
 
 
-        const form = document.querySelector('form');
-        form.addEventListener('submit', submitForm);
-
-        function submitForm(event) {
-            event.preventDefault();
-            var contactError = document.getElementById('contact-error');
-            const name = document.querySelector('#name').value;
-            const number = document.querySelector('#contactNumber').value;
-            const location = document.querySelector('#location').value;
-            const date = document.querySelector('#DOB').value;
-
-
-            var password = generateUUID();
-
-            const data = {
-                name: name,
-                number: number,
-                location: location,
-                date: date,
-                password: password
-            };
-
-            const xhr = new XMLHttpRequest();
-            const url = "/registerUser";
-            // const requestBody = {
-            //     username: "johndoe",
-            //     password: "password123"
-            // };
-
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-
-            xhr.onreadystatechange = function() {
-                if (xhr.status === 200) {
-                    contactError.innerHTML = '';
-                    console.log("Form Submitted")
-                    // const xhr2 = new XMLHttpRequest();
-                    // xhr2.open("GET", "/loginRedirect");
-                    // xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    // // xhr2.onload = function() {
-                    // //     if (xhr2.status === 200) {
-                    // //         // handle successful response
-                    // //     } else {
-                    // //
-                    // //     }
-                    // // }
-                    // xhr2.send(JSON.stringify(data));
-                    // window.location.href = "/login?pass="+password;
-                    window.location.href = "/loginRedirect";
-
-                } else {
-                    contactError.innerHTML = 'User with given contact number already exists.';
-                    console.log(xhr.status);
-                    throw new Error('Network response was not ok');
-                }
-            };
-
-            xhr.send(JSON.stringify(data));
-
-
-            // fetch('/registerUser', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(data)
-            // })
-            //     .then(response => {
-            //         console.log(response.body);
-            //         if (!response.ok) {
-            //
-            //             contactError.innerHTML = 'User with given contact number already exists.';
-            //             throw new Error('Network response was not ok');
-            //         }
-            //         contactError.innerHTML = '';
-            //         // alert('Form submitted successfully!');
-            //         window.location.href = "/login?pass="+password;
-            //
-            //     })
-            //     .catch(error => {
-            //         console.error(error);
-            //         console.log('An error occurred while submitting the form.');
-            //     });
-
-            // .then(response => {
-            //     if (!response.ok) {
-            //         throw new Error('Network response was not ok');
-            //     }
-            //     return response.json();
-            // })
-            // .then(data => {
-            //     console.log(data);
-            //     alert('Form submitted successfully!');
-            // })
-            // .catch(error => {
-            //     console.error(error);
-            //     alert('An error occurred while submitting the form.');
-            // });
-        }
+        // const form = document.querySelector('form');
+        // form.addEventListener('submit', submitForm);
+        //
+        // function submitForm(event) {
+        //     event.preventDefault();
+        //     var contactError = document.getElementById('contact-error');
+        //     const name = document.querySelector('#name').value;
+        //     const number = document.querySelector('#contactNumber').value;
+        //     const location = document.querySelector('#location').value;
+        //     const date = document.querySelector('#DOB').value;
+        //
+        //
+        //     var password = generateUUID();
+        //
+        //     const data = {
+        //         name: name,
+        //         number: number,
+        //         location: location,
+        //         date: date,
+        //         password: password
+        //     };
+        //
+        //     const xhr = new XMLHttpRequest();
+        //     const url = "/registerUser";
+        //     // const requestBody = {
+        //     //     username: "johndoe",
+        //     //     password: "password123"
+        //     // };
+        //
+        //     xhr.open("POST", url, true);
+        //     xhr.setRequestHeader("Content-Type", "application/json");
+        //
+        //     xhr.onreadystatechange = function() {
+        //         if (xhr.status === 200) {
+        //             contactError.innerHTML = '';
+        //             console.log("Form Submitted")
+        //             window.location.href = xhr.responseURL;
+        //             // const xhr2 = new XMLHttpRequest();
+        //             // xhr2.open("GET", "/loginRedirect");
+        //             // xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //             // // xhr2.onload = function() {
+        //             // //     if (xhr2.status === 200) {
+        //             // //         // handle successful response
+        //             // //     } else {
+        //             // //
+        //             // //     }
+        //             // // }
+        //             // xhr2.send(JSON.stringify(data));
+        //             // window.location.href = "/login?pass="+password;
+        //             // window.location.href = "/loginRedirect";
+        //
+        //         } else {
+        //             contactError.innerHTML = 'User with given contact number already exists.';
+        //             console.log(xhr.status);
+        //             throw new Error('Network response was not ok');
+        //         }
+        //     };
+        //
+        //     xhr.send(JSON.stringify(data));
+        //
+        //
+        //     // fetch('/registerUser', {
+        //     //     method: 'POST',
+        //     //     headers: {
+        //     //         'Content-Type': 'application/json'
+        //     //     },
+        //     //     body: JSON.stringify(data)
+        //     // })
+        //     //     .then(response => {
+        //     //         console.log(response.body);
+        //     //         if (!response.ok) {
+        //     //
+        //     //             contactError.innerHTML = 'User with given contact number already exists.';
+        //     //             throw new Error('Network response was not ok');
+        //     //         }
+        //     //         contactError.innerHTML = '';
+        //     //         // alert('Form submitted successfully!');
+        //     //         window.location.href = "/login?pass="+password;
+        //     //
+        //     //     })
+        //     //     .catch(error => {
+        //     //         console.error(error);
+        //     //         console.log('An error occurred while submitting the form.');
+        //     //     });
+        //
+        //     // .then(response => {
+        //     //     if (!response.ok) {
+        //     //         throw new Error('Network response was not ok');
+        //     //     }
+        //     //     return response.json();
+        //     // })
+        //     // .then(data => {
+        //     //     console.log(data);
+        //     //     alert('Form submitted successfully!');
+        //     // })
+        //     // .catch(error => {
+        //     //     console.error(error);
+        //     //     alert('An error occurred while submitting the form.');
+        //     // });
+        // }
     }
     function generateUUID() {
         var d = new Date().getTime();
@@ -259,50 +265,64 @@
         });
         return uuid;
     }
-    function submitForm(event) {
-        event.preventDefault();
-        var contactError = document.getElementById('contact-error');
-        const name = document.querySelector('#name').value;
-        const number = document.querySelector('#contactNumber').value;
-        const location = document.querySelector('#location').value;
-        const date = document.querySelector('#DOB').value;
+    // function submitForm(event) {
+    //     event.preventDefault();
+    //     var contactError = document.getElementById('contact-error');
+    //     const name = document.querySelector('#name').value;
+    //     const number = document.querySelector('#contactNumber').value;
+    //     const location = document.querySelector('#location').value;
+    //     const date = document.querySelector('#DOB').value;
+    //
+    //     var password = generateUUID();
+    //
+    //     const data = {
+    //         name: name,
+    //         number: number,
+    //         location: location,
+    //         date: date,
+    //         password: password
+    //     };
+    //
+    //     const xhr = new XMLHttpRequest();
+    //     const url = "/registerUser";
+    //     // const requestBody = {
+    //     //     username: "johndoe",
+    //     //     password: "password123"
+    //     // };
+    //
+    //     xhr.open("POST", url, true);
+    //     xhr.setRequestHeader("Content-Type", "application/json");
+    //
+    //     xhr.onreadystatechange = function () {
+    //         if (xhr.status === 200) {
+    //             contactError.innerHTML = '';
+    //             window.location.href = "/login?pass="+password;
+    //             // window.location.href = "www.google.com";
+    //
+    //         } else {
+    //             contactError.innerHTML = 'User with given contact number already exists.';
+    //             console.log(xhr.status);
+    //             throw new Error('Network response was not ok');
+    //         }
+    //     };
+    //
+    //     xhr.send(JSON.stringify(data));
+    // }
 
-        var password = generateUUID();
-
-        const data = {
-            name: name,
-            number: number,
-            location: location,
-            date: date,
-            password: password
-        };
-
-        const xhr = new XMLHttpRequest();
-        const url = "/registerUser";
-        // const requestBody = {
-        //     username: "johndoe",
-        //     password: "password123"
-        // };
-
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.status === 200) {
-                contactError.innerHTML = '';
-                window.location.href = "/login?pass="+password;
-                // window.location.href = "www.google.com";
-
-            } else {
-                contactError.innerHTML = 'User with given contact number already exists.';
-                console.log(xhr.status);
-                throw new Error('Network response was not ok');
-            }
-        };
-
-        xhr.send(JSON.stringify(data));
-    }
-
+    // var form = document.getElementById('myForm');
+    //
+    // form.addEventListener('submit', function(event) {
+    //     event.preventDefault(); // prevent the default form submission
+    //     var contactError = document.getElementById('contact-error');
+    //     var formData = new FormData(form);
+    //     try {
+    //         form.submit(); // submit the form
+    //         contactError.innerText = "";
+    //     }catch (e) {
+    //         contactError.innerHTML = 'User with given contact number already exists.';
+    //     }
+    //
+    // });
 
     // fetch('/registerUser', {
     //     method: 'POST',

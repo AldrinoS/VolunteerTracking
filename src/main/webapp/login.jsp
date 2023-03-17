@@ -99,7 +99,7 @@
     <input type="password" id="password" name="password" placeholder="Enter your password"><br>
 
     <input type="submit" value="Login">
-    <button id="registerBtn">Create new Account</button>
+    <button id="registerBtn">Create new account</button>
 
     <div id="userReg">
         <p id="userRegInd">User registered successfully</p>

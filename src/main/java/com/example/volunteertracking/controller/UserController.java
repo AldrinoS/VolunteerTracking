@@ -62,8 +62,8 @@ public class UserController {
         try {
             volunteerService.saveUser(volunteer);
         } catch (Exception e) {
-            logger.info("Register Error Occurred");
-            throw e;
+            attributes.addFlashAttribute("registerFailed", "User with given contact number already exists!");
+            return new RedirectView("/register");
 //            return new ResponseEntity("User with given contact number already exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 //        logger.info("Register New User Done");
@@ -83,7 +83,7 @@ public class UserController {
     }
 
     @PostMapping("registerUser")
-    public ResponseEntity postRegisterUser(@RequestBody Volunteer volunteer) throws Exception {
+    public RedirectView postRegisterUser(@RequestBody Volunteer volunteer, RedirectAttributes attributes) throws Exception {
 
         try {
             volunteerService.saveUser(volunteer);
@@ -93,7 +93,8 @@ public class UserController {
 //            return new ResponseEntity("User with given contact number already exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseEntity.ok().build();
+        attributes.addFlashAttribute("password", volunteer.getPassword());
+        return new RedirectView("/login");
 //        return "login.jsp";
     }
 
