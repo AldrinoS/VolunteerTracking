@@ -246,7 +246,6 @@
                 return cookie.substring(name.length + 1);
             }
         }
-
         // If we didn't find the cookie, return null
         return null;
     }
@@ -306,27 +305,29 @@
         },
     ];
 
-    fetch('/get-events', {
-        method: 'GET'
-    })
-        .then(response => {
+    getEventData();
 
-            if (response.ok) {
-                response.text().then((resp=>{
-                    console.log(resp)
-                    var responseData = JSON.parse(resp);
-                    data = responseData;
-                    handleMyEvents();
-                }))
-            } else {
-                throw new Error('Network response was not ok');
-            }
-
-        })
-        .catch(error => {
-            console.error(error);
-            alert('An error occurred while submitting the form.');
-        });
+    // fetch('/get-events', {
+    //     method: 'GET'
+    // })
+    //     .then(response => {
+    //
+    //         if (response.ok) {
+    //             response.text().then((resp=>{
+    //                 console.log(resp)
+    //                 var responseData = JSON.parse(resp);
+    //                 data = responseData;
+    //                 handleMyEvents();
+    //             }))
+    //         } else {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //         alert('An error occurred while submitting the form.');
+    //     });
 
     var myEventsAnchor = document.getElementById("myEvents");
     var volunteeredEventsAnchor = document.getElementById("volunteeredEvents");
@@ -345,27 +346,48 @@
     );
 
     function getEventData() {
-        fetch('/get-events', {
-            method: 'GET'
-        })
-            .then(response => {
+        // fetch('/get-events', {
+        //     method: 'GET'
+        // })
+        //     .then(response => {
+        //
+        //         if (response.ok) {
+        //             response.text().then((resp=>{
+        //                 console.log(resp)
+        //                 var responseData = JSON.parse(resp);
+        //                 data = responseData;
+        //                 handleMyEvents();
+        //             }))
+        //         } else {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //         alert('An error occurred while submitting the form.');
+        //     });
 
-                if (response.ok) {
-                    response.text().then((resp=>{
-                        console.log(resp)
-                        var responseData = JSON.parse(resp);
-                        data = responseData;
-                        handleMyEvents();
-                    }))
-                } else {
-                    throw new Error('Network response was not ok');
-                }
+        const xhr = new XMLHttpRequest();
+        const url = "/get-events";
 
-            })
-            .catch(error => {
-                console.error(error);
-                alert('An error occurred while submitting the form.');
-            });
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200) {
+                let resp = xhr.responseText;
+                console.log(resp)
+                var responseData = JSON.parse(resp);
+                data = responseData;
+                handleMyEvents();
+
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        };
+
+        xhr.send();
     }
 
 
@@ -499,7 +521,8 @@
                     data.forEach((item)=>{
                         if(item.id == eventId) {
                             item.noOfVolunteers = item.noOfVolunteers+1;
-                            item.volunteers = [...item.volunteers, getCookie("User")];
+                            item.volunteers.push(getCookie("User"))
+                            // item.volunteers = [...item.volunteers, getCookie("User")];
                         }
                     });
                     handleUpcomingEvents();

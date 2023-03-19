@@ -137,30 +137,26 @@ public class UserController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-//        ResponseCookie jwtCookie = jwtUtil.generateJwtCookie(userDetails);
-//        ResponseCookie authUser = ResponseCookie.from("User", userDetails.getNumber())
-//                .path("/")
-//                .maxAge(1 * 24 * 60 * 60)
-//                .domain("localhost")
-//                .build();
-//        logger.info("JWT: " + jwtCookie.toString());
-
         String jwt = jwtUtil.generateJwt(userDetails);
+        logger.info("JWT Generated: " + jwt);
 
         String cookieString = jwt;
         Cookie cookie = new Cookie("JWT", cookieString);
         cookie.setDomain("localhost");
         cookie.setPath("/");
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setHttpOnly(false);
         cookie.setMaxAge(1*24*60*60);
-        response.addCookie(cookie);
 
-//        RedirectView redirectView = new RedirectView("/home");
-//        attributes.addFlashAttribute(HttpHeaders.SET_COOKIE, jwtCookie.toString());
-//        redirectView.addStaticAttribute(HttpHeaders.SET_COOKIE, jwtCookie.toString());
-//        attributes.addFlashAttribute("jwt", jwt);
-//        return redirectView;
+        Cookie cookie2 = new Cookie("User", userDetails.getNumber());
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        cookie.setHttpOnly(false);
+        cookie.setMaxAge(1*24*60*60);
+
+        response.addCookie(cookie);
+        response.addCookie(cookie2);
 
         return new RedirectView("/home");
     }
