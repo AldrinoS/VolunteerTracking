@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -119,6 +121,50 @@ public class UserController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString(), authUser.toString()).build();
     }
 
+    @GetMapping("/signin")
+    public RedirectView authenticateUserParam(@RequestParam String contactNumber, @RequestParam String password, RedirectAttributes attributes, HttpServletResponse response) {
+        Authentication authentication = null;
+        try {
+            authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(contactNumber, password));
+        }catch (Exception e) {
+            attributes.addFlashAttribute("failureMsg", "Incorrect username or password!");
+            return new RedirectView("/login");
+        }
+
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+//        ResponseCookie jwtCookie = jwtUtil.generateJwtCookie(userDetails);
+//        ResponseCookie authUser = ResponseCookie.from("User", userDetails.getNumber())
+//                .path("/")
+//                .maxAge(1 * 24 * 60 * 60)
+//                .domain("localhost")
+//                .build();
+//        logger.info("JWT: " + jwtCookie.toString());
+
+        String jwt = jwtUtil.generateJwt(userDetails);
+
+        String cookieString = jwt;
+        Cookie cookie = new Cookie("JWT", cookieString);
+        cookie.setDomain("localhost");
+        cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(1*24*60*60);
+        response.addCookie(cookie);
+
+//        RedirectView redirectView = new RedirectView("/home");
+//        attributes.addFlashAttribute(HttpHeaders.SET_COOKIE, jwtCookie.toString());
+//        redirectView.addStaticAttribute(HttpHeaders.SET_COOKIE, jwtCookie.toString());
+//        attributes.addFlashAttribute("jwt", jwt);
+//        return redirectView;
+
+        return new RedirectView("/home");
+    }
+
     @DeleteMapping("deleteAllVol")
     public ResponseEntity deleteAll() {
         volunteerService.deleteAllUser();
@@ -133,11 +179,22 @@ public class UserController {
     @GetMapping("logoutUser")
     public ResponseEntity<?> logoutUser() {
         System.out.println("Logout method called");
-        ResponseCookie cookie = ResponseCookie.from("jwt", null).build();
+        ResponseCookie cookie = ResponseCookie.from("JWT", null).build();
         ResponseCookie authUser = ResponseCookie.from("User", null).build();
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString(), authUser.toString()).build();
     }
 
+
+    @GetMapping("/register")
+    public String registerUser(Model model) {
+        return "register.jsp";
+    }
+
+    @GetMapping("/login")
+    public String loginUser(Model model, @RequestParam(required = false) String pass) {
+//        model.addAttribute("UUID", pass);
+        return "login.jsp";
+    }
 
 }

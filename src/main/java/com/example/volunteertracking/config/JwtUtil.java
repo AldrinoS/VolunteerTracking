@@ -48,7 +48,7 @@ public class JwtUtil {
     }
 
     public String generateJwt(UserDetailsImpl userPrincipal) {
-        String jwt = generateTokenFromContactNumber(userPrincipal.getUsername());
+        String jwt = generateTokenFromContactNumber(userPrincipal.getNumber());
 //        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
         return jwt;
     }

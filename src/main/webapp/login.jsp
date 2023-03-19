@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Login Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,7 +44,7 @@
             margin-bottom: 20px;
         }
 
-        input[type="submit"] {
+        #loginBtn {
             background-color: #4CAF50;
             color: #fff;
             font-size: 16px;
@@ -55,7 +55,7 @@
             width: 100%;
         }
 
-        input[type="submit"]:hover {
+        #loginBtn:hover {
             background-color: #3e8e41;
         }
 
@@ -85,20 +85,20 @@
         }
         #wrongCred {
             text-align: center;
-            display: none;
+            /*display: none;*/
         }
     </style>
 </head>
 <body>
-<h1>Login</h1>
-<form>
+<h1>Login Form</h1>
+<form action="/signin">
     <label for="contactNumber">Contact Number:</label>
-    <input type="text" id="contactNumber" name="contactNumber" placeholder="Enter your contact number"><br>
+    <input type="text" id="contactNumber" name="contactNumber" placeholder="Enter your contact number" required><br>
 
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" placeholder="Enter your password"><br>
+    <input type="password" id="password" name="password" placeholder="Enter your password" required><br>
 
-    <input type="submit" value="Login">
+    <button id="loginBtn" type="submit" value="Login">Login</button>
     <button id="registerBtn">Create new account</button>
 
     <div id="userReg">
@@ -107,13 +107,15 @@
     </div>
 
     <div id="wrongCred">
-        <p>Incorrect Username or Password!</p>
+        <p id="failMsgs">${failureMsg}</p>
     </div>
 </form>
 
 
 
 <script>
+
+
 
     // Get the URL parameters as an object
     function getParams() {
@@ -151,9 +153,13 @@
     })
 
     window.onload = function() {
+        let failMsg = document.getElementById("failMsgs").innerText;
+        if(failMsg) {
+            alert(failMsg);
+        }
         displayParams();
     const form = document.querySelector('form');
-    form.addEventListener('submit', submitForm);
+    // form.addEventListener('submit', submitForm);
 
 
 
@@ -185,6 +191,7 @@
                     window.location.href = '/home';
                 } else {
                     wrongCredDiv.style.display = "block";
+                    alert("Incorrect Username or Password!")
                 }
             })
             .catch(error => {

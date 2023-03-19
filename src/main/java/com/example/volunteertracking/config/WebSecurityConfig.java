@@ -62,7 +62,7 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/registerUser**","/signin","/register","/login", "/loginRedirect").permitAll()
-                .antMatchers("/api/test/**", "/delete-events").permitAll()
+                .antMatchers("/app/**", "/delete-events").permitAll()
                 .antMatchers(h2ConsolePath + "/**").permitAll()
 //                .antMatchers("/create-event", "/home", "/add-event").permitAll()
                 .anyRequest().authenticated();

@@ -3,6 +3,7 @@ package com.example.volunteertracking.controller;
 import com.example.volunteertracking.model.NGOEvent;
 import com.example.volunteertracking.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,21 +16,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+//@RequestMapping("app")
 public class AppController {
 
     @Autowired
     AppService appService;
 
-    @GetMapping("/register")
-    public String registerUser(Model model) {
-        return "register.jsp";
-    }
-
-    @GetMapping("/login")
-    public String loginUser(Model model, @RequestParam(required = false) String pass) {
-//        model.addAttribute("UUID", pass);
-        return "login.jsp";
-    }
+//    @GetMapping("/register")
+//    public String registerUser(Model model) {
+//        return "register.jsp";
+//    }
+//
+//    @GetMapping("/login")
+//    public String loginUser(Model model, @RequestParam(required = false) String pass) {
+////        model.addAttribute("UUID", pass);
+//        return "login.jsp";
+//    }
 
     @GetMapping("/create-event")
     public String createEvent(Model model) {
@@ -37,8 +39,9 @@ public class AppController {
         return "create-event.jsp";
     }
 
-    @GetMapping("/home")
-    public String homePage(Model model) {
+    @GetMapping("home")
+    public String homePage() {
+//        model.addAttribute(HttpHeaders.SET_COOKIE, model.getAttribute(HttpHeaders.SET_COOKIE).toString());
         return "home.jsp";
     }
 
