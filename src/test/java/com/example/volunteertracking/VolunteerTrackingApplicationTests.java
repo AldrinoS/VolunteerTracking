@@ -176,32 +176,32 @@ class VolunteerTrackingApplicationTests {
                 didThrow = true;
             }
 //            assert (didThrow);
-            page = webClient.getPage("http://localhost:" + port + "/app/home");
+            page = webClient.getPage("http://localhost:" + port + "/home");
             Cookie cookie = new Cookie(webClient.getCurrentWindow().getEnclosedPage().getUrl().getHost(), "JWT",
-                    ((char) (((int) JWT.charAt(0)) + 1)) + JWT.substring(1));
+                    ((char) (((int) JWT.charAt(0) +1) )) + JWT.substring(1));
             webClient.getCookieManager().addCookie(cookie);
             CollectingAlertHandler alertHandler = new CollectingAlertHandler();
             webClient.setAlertHandler(alertHandler);
-            page = webClient.getPage("http://localhost:" + port + "/app/home");
+            page = webClient.getPage("http://localhost:" + port + "/home");
             assertEquals(alertHandler.getCollectedAlerts().get(0), "Logged Out Successfully!");
             assert (webClient.getCurrentWindow().getEnclosedPage().getUrl().toString()
                     .contains("http://localhost:" + port + "/login"));
             cookie = new Cookie(webClient.getCurrentWindow().getEnclosedPage().getUrl().getHost(), "JWT", JWT);
             webClient.getCookieManager().addCookie(cookie);
-            page = webClient.getPage("http://localhost:" + port + "/app/home");
+            page = webClient.getPage("http://localhost:" + port + "/home");
             assertEquals(webClient.getCurrentWindow().getEnclosedPage().getUrl().toString(),
-                    "http://localhost:" + port + "/app/home");
+                    "http://localhost:" + port + "/home");
             page = webClient.getPage("http://localhost:" + port + "/login");
             assertEquals(webClient.getCurrentWindow().getEnclosedPage().getUrl().toString(),
-                    "http://localhost:" + port + "/app/home");
+                    "http://localhost:" + port + "/home");
             page = webClient.getPage("http://localhost:" + port + "/register");
             assertEquals(webClient.getCurrentWindow().getEnclosedPage().getUrl().toString(),
-                    "http://localhost:" + port + "/app/home");
+                    "http://localhost:" + port + "/home");
             page = ((HtmlElement) page.getByXPath("//*[text()='Logout']").get(0)).click();
             assertEquals(alertHandler.getCollectedAlerts().get(1), "Logged Out Successfully!");
             assert (webClient.getCurrentWindow().getEnclosedPage().getUrl().toString()
                     .contains("http://localhost:" + port + "/login"));
-            page = webClient.getPage("http://localhost:" + port + "/app/home");
+            page = webClient.getPage("http://localhost:" + port + "/home");
             assertEquals(alertHandler.getCollectedAlerts().get(2), "Please Login!");
             assert (webClient.getCurrentWindow().getEnclosedPage().getUrl().toString()
                     .contains("http://localhost:" + port + "/login"));

@@ -3,6 +3,7 @@ package com.example.volunteertracking.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -25,16 +26,21 @@ public class ApiAuthenticationEntryPoint implements AuthenticationEntryPoint {
             throws IOException, ServletException {
         logger.error("Unauthorized error: {}", authException.getMessage());
 
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        request.getSession().setAttribute("JWT", "Invalid");
+//        response.setHeader(HttpHeaders.AUTHORIZATION, "invalid");
 
-        final Map<String, Object> body = new HashMap<>();
-        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-        body.put("error", "Unauthorized");
-        body.put("message", authException.getMessage());
-        body.put("path", request.getServletPath());
+//        final Map<String, Object> body = new HashMap<>();
+//        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+//        body.put("error", "Unauthorized");
+//        body.put("message", authException.getMessage());
+//        body.put("path", request.getServletPath());
 
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(response.getOutputStream(), body);
+        response.sendRedirect("/login");
+//        response.
+
+//        final ObjectMapper mapper = new ObjectMapper();
+//        mapper.writeValue(response.getOutputStream(), body);
     }
 }

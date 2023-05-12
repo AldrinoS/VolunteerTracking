@@ -6,6 +6,7 @@ import com.example.volunteertracking.model.LoginRequest;
 import com.example.volunteertracking.model.Volunteer;
 import com.example.volunteertracking.service.UserDetailsImpl;
 import com.example.volunteertracking.service.VolunteerService;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
@@ -183,13 +186,41 @@ public class UserController {
 
 
     @GetMapping("/register")
-    public String registerUser(Model model) {
+    public String registerUser(Model model, @CookieValue(value = "JWT", required = false) String jwt) {
+        if(jwt!=null && jwtUtil.validateJwtToken(jwt)) {
+            return "redirect:/home";
+        }
         return "register.jsp";
     }
 
     @GetMapping("/login")
-    public String loginUser(Model model, @RequestParam(required = false) String pass) {
+    public String loginUser(Model model,
+                            HttpServletRequest request, HttpServletResponse response,
+                            @CookieValue(value = "JWT", required = false) String jwt) {
 //        model.addAttribute("UUID", pass);
+//        String jwt1 = response.getHeader("jwt");
+//        if(jwt1 !=null && response.getHeader("jwt").equalsIgnoreCase("invalid"))
+//            model.addAttribute("failureMsg", "Logged Out Successfully!");
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(jwt!=null && jwtUtil.validateJwtToken(jwt)) {
+            return "redirect:/home";
+        }
+//
+//        if(authentication!=null && authentication instanceof AnonymousAuthenticationToken) {
+//            return "redirect:/home";
+//        }
+
+        String customHeader = (String) request.getSession().getAttribute("JWT");
+        if (customHeader != null && customHeader.equalsIgnoreCase("Invalid")) {
+            response.addHeader("JWT", customHeader);
+            model.addAttribute("failureMsg", "Logged Out Successfully!");
+            request.getSession().removeAttribute("JWT");
+        }
+
+//        System.out.println(Authorization);
+
         return "login.jsp";
     }
 

@@ -227,6 +227,7 @@
 </div>
 </body>
 <script>
+
     function renderCreateEventPage() {
         window.location.href="/create-event";
     }
@@ -556,18 +557,34 @@
     }
 
     function logoutUser() {
-        fetch('/logoutUser', {
-            method: 'GET'
-        })
-            .then(response => {
-                if(response.ok) {
-                    // console.log("Logged Out")
-                    window.location.href="/login";
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        // fetch('/logoutUser', {
+        //     method: 'GET'
+        // })
+        //     .then(response => {
+        //         if(response.ok) {
+        //             // console.log("Logged Out")
+        //             window.location.href="/login";
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error(error);
+        //     });
+        alert("Logged Out Successfully!")
+        const xhr = new XMLHttpRequest();
+        const url = "/logoutUser";
+
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200) {
+
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        };
+
+        xhr.send();
     }
 
     // hide the popup box
