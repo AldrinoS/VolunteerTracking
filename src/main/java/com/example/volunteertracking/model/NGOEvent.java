@@ -8,7 +8,7 @@ public class NGOEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String eventAdmin;
+    private String username;
     private String contactNumber;
     private String eventName;
     private String eventDesc;
@@ -74,12 +74,12 @@ public class NGOEvent {
         this.noOfVolunteers = noOfVolunteers;
     }
 
-    public String getEventAdmin() {
-        return eventAdmin;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEventAdmin(String eventAdmin) {
-        this.eventAdmin = eventAdmin;
+    public void setUsername(String eventAdmin) {
+        this.username = eventAdmin;
     }
 
     public List<String> getVolunteers() {
@@ -94,7 +94,7 @@ public class NGOEvent {
     public String toString() {
         return "NGOEvent{" +
                 "id=" + id +
-                ", eventAdmin='" + eventAdmin + '\'' +
+                ", eventAdmin='" + username + '\'' +
                 ", contactNumber='" + contactNumber + '\'' +
                 ", eventName='" + eventName + '\'' +
                 ", eventDesc='" + eventDesc + '\'' +
