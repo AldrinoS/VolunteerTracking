@@ -18,6 +18,18 @@ public class NGOEvent {
     @ElementCollection
     private List<String> volunteers;
 
+    public NGOEvent() {
+    }
+
+    public NGOEvent(String username, String contactNumber, String eventName, String eventDesc, String eventLocation, String eventDate) {
+        this.username = username;
+        this.contactNumber = contactNumber;
+        this.eventName = eventName;
+        this.eventDesc = eventDesc;
+        this.eventLocation = eventLocation;
+        this.eventDate = eventDate;
+    }
+
     public Integer getId() {
         return id;
     }
