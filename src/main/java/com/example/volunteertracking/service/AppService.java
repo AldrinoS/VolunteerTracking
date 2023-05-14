@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,17 @@ public class AppService {
 
     }
 
-    public static boolean isUpcomingDate(String dateStr) {
+    public void addEventVolunteer(String contactNumber, int eventId) {
+        Optional<NGOEvent> event = ngoEventRepository.findById(eventId);
+        if(event.isPresent()) {
+            NGOEvent ngoEvent = event.get();
+            ngoEvent.getVolunteers().add(contactNumber);
+            ngoEvent.setNoOfVolunteers(ngoEvent.getVolunteers().size());
+            ngoEventRepository.save(ngoEvent);
+        }
+    }
+
+    private boolean isUpcomingDate(String dateStr) {
         // Parse the input date string into a LocalDate object
         LocalDate inputDate = LocalDate.parse(dateStr);
 

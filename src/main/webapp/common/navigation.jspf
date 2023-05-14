@@ -21,7 +21,7 @@
                 <a href="/home?option=upcomingEvents" class="btn btn-success">Upcoming NGO Events</a>
             </div>
             <div class="col">
-                <a href="#" class="btn btn-success">Create NGO Event</a>
+                <a href="/create-event" class="btn btn-success">Create NGO Event</a>
             </div>
         </div>
     </div>

@@ -1,6 +1,8 @@
 package com.example.volunteertracking.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -9,10 +11,15 @@ public class NGOEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String username;
+//    @Size(max = 10, min = 10, message = "Please enter contact number that is 10 digits")
     private String contactNumber;
+//    @NotBlank(message = "Event Name is required")
     private String eventName;
+//    @Size(min = 5, message = "Enter description that is minimum 5 characters long")
     private String eventDesc;
+//    @NotBlank(message = "Event Location is required")
     private String eventLocation;
+//    @NotBlank(message = "Event Date is required")
     private String eventDate;
     private int noOfVolunteers;
     @ElementCollection

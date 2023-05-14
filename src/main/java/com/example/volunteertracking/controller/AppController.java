@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
@@ -55,7 +56,7 @@ public class AppController {
     }
 
     @PostMapping("create-event")
-    public String addNewEvent(@Valid NGOEvent ngoEvent, BindingResult result) {
+    public String addNewEvent(ModelMap model, @Valid NGOEvent ngoEvent, BindingResult result) {
 
         if(result.hasErrors()) {
             return "createEvent.jsp";
@@ -68,6 +69,12 @@ public class AppController {
 
         return "redirect:home";
 
+    }
+
+    @RequestMapping("volunteer-event")
+    public String addVolunteerToEvent(ModelMap model, @RequestParam int eventId) {
+        appService.addEventVolunteer("aldrino", eventId);
+        return "redirect:home?option=upcomingEvents";
     }
 
 }
